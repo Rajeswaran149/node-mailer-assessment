@@ -18,7 +18,7 @@ const isAuth = (req, res, next) => {
   const auth = req.headers.auth;
   // console.log(auth);
   if (auth) {
-    jwt.verify(auth, "process.env.JWT_SECRET", (err, decode) => {
+    jwt.verify(auth, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({ message: "unauthorized" });
       } else {

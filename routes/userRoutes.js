@@ -1,8 +1,8 @@
 const express = require("express");
 const User = require("../model/user.js");
 const sendMail = require("../utils/sendEmail");
-const isAuth = require("../utils/token.js");
-const generateToekn = require("../utils/token.js");
+const { isAuth } = require("../utils/token.js");
+const { generateToekn } = require("../utils/token.js");
 
 const userRouter = express.Router();
 
@@ -27,7 +27,7 @@ userRouter.post("/login", async (req, res) => {
     if (user.password == password) {
       await user.save();
       res.status(200).json("Login success");
-      await sendMail(email, "Auth key", `${generateToekn.generateToekn(user)}`);
+      await sendMail(email, "Auth key", `${generateToekn(user)}`);
     } else {
       res.send("Invalid Credentials");
     }
@@ -52,7 +52,7 @@ userRouter.post("/forgetpassword", async (req, res) => {
   }
 });
 
-userRouter.post("/mailsend", isAuth.isAuth, async (req, res) => {
+userRouter.post("/mailsend", isAuth, async (req, res) => {
   try {
     const { email, subject, text } = req.body;
     sendMail(email, subject, text);
